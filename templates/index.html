@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Railway LLM Chatbot</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        #chatbox {
+            width: 500px;
+            height: 350px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        input { width: 380px; padding: 8px; }
+        button { padding: 8px 15px; }
+    </style>
+</head>
+<body>
+
+<h2>🤖 Railway Deployed LLM Chatbot</h2>
+
+<div id="chatbox"></div>
+
+<input type="text" id="message" placeholder="Ask something..." />
+<button onclick="sendMessage()">Send</button>
+
+<script>
+async function sendMessage() {
+    const messageInput = document.getElementById("message");
+    const message = messageInput.value;
+    if (!message) return;
+
+    const response = await fetch("/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message: message})
+    });
+
+    const data = await response.json();
+
+    const chatbox = document.getElementById("chatbox");
+    chatbox.innerHTML += "<p><b>You:</b> " + message + "</p>";
+    chatbox.innerHTML += "<p><b>Bot:</b> " + (data.reply || data.error) + "</p>";
+    chatbox.scrollTop = chatbox.scrollHeight;
+
+    messageInput.value = "";
+}
+</script>
+
+</body>
+</html>
