@@ -25,7 +25,7 @@ def chat():
             return jsonify({"error": "Message is required"}), 400
 
         completion = client.chat.completions.create(
-            model="llama3-8b-8192",
+            model="llama-3.3-70b-versatile",
             messages=[{"role": "user", "content": user_message}]
         )
 
